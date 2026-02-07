@@ -1,0 +1,24 @@
+# Large files - excluded from Git
+emi_prediction_dataset.csv
+
+# Exclude large/debug models (keep only best 2 + label encoder)
+pipeline_regression.joblib
+pipeline_regression_quick.joblib
+pipeline_classification.joblib
+pipeline_classification_baseline.joblib
+pipeline_debug_linear.joblib
+pipeline_debug_rf.joblib
+
+# Keep these models (not ignored):
+# - pipeline_classification_xgb_tuned_fast.joblib
+# - pipeline_regression_xgb_focused.joblib
+# - label_encoder_classes.joblib
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environment
+.env
+venv/
