@@ -120,7 +120,11 @@ def main():
         'other_monthly_expenses': other_exp, 'existing_loans': exist_loans, 'current_emi_amount': curr_emi,
         'credit_score': credit_score, 'bank_balance': bank_bal, 'emergency_fund': emerg_fund,
         'emi_scenario': emi_scenario, 'requested_amount': req_amount, 'requested_tenure': req_tenure,
-        'debt_to_income_ratio': debt_to_inc, 'expense_to_income_ratio': exp_to_inc, 'savings_ratio': savings_rat
+        # Engineered Features
+        'total_expenses': total_expenses,
+        'debt_to_income_ratio': debt_to_inc, 
+        'expense_to_income_ratio': exp_to_inc, 
+        'savings_ratio': savings_rat
     }
     input_df = pd.DataFrame([input_data])
 
