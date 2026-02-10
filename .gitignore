@@ -3,6 +3,7 @@ emi_prediction_dataset.csv
 
 # Exclude ALL model files by default
 *.joblib
+model_*.joblib
 # But keep the best performing ones
 !pipeline_classification_best.joblib
 !pipeline_regression_best.joblib

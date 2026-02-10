@@ -167,6 +167,9 @@ def run_training_pipeline():
             mlflow.log_metric("f1_score", f1)
             mlflow.sklearn.log_model(pipeline, "model")
             
+            # Save local copy for reference
+            joblib.dump(pipeline, f'model_clf_{name.lower()}.joblib')
+            
             if acc > best_clf_score:
                 best_clf_score = acc
                 best_clf_name = name
@@ -218,6 +221,9 @@ def run_training_pipeline():
             mlflow.log_metric("r2", r2)
             mlflow.log_metric("mae", mae)
             mlflow.sklearn.log_model(pipeline, "model")
+            
+            # Save local copy for reference
+            joblib.dump(pipeline, f'model_reg_{name.lower()}.joblib')
             
             if rmse < best_reg_score:
                 best_reg_score = rmse
