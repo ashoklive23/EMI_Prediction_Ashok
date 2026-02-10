@@ -15,15 +15,22 @@ body,
 
 /* Remove White Top Header and Toolbar Icons */
 header[data-testid="stHeader"],
-[data-testid="stHeader"] {
+[data-testid="stHeader"],
+.st-emotion-cache-1pxm65v {
     background-color: #1a1f2e !important;
     color: #ffffff !important;
 }
 
-/* Force Toolbar Icons (Top Right) to be white */
-[data-testid="stHeader"] button,
-[data-testid="stHeader"] span,
-[data-testid="stHeader"] svg {
+/* Force Toolbar Icons (Top Right), Share button, and badges to be white/light */
+[data-testid="stHeader"] * {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+/* Specific fix for 'Share' button and GitHub icon color fringing/darkness */
+[data-testid="stHeader"] a,
+[data-testid="stHeader"] button p,
+[data-testid="stHeader"] svg path {
     color: #ffffff !important;
     fill: #ffffff !important;
 }
