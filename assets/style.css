@@ -13,26 +13,24 @@ body,
     font-family: 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Remove White Top Header and Toolbar Icons */
+/* Professional Theme: Force Dark Blue Background on Header/Toolbar */
 header[data-testid="stHeader"],
 [data-testid="stHeader"],
-.st-emotion-cache-1pxm65v {
+.st-emotion-cache-1pxm65v,
+.st-emotion-cache-1647863 {
     background-color: #1a1f2e !important;
-    color: #ffffff !important;
+    background: #1a1f2e !important;
 }
 
-/* Force Toolbar Icons (Top Right), Share button, and badges to be white/light */
-[data-testid="stHeader"] * {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-}
-
-/* Specific fix for 'Share' button and GitHub icon color fringing/darkness */
+/* Force HEADER icons, text, and share button to be White */
+[data-testid="stHeader"] *,
+[data-testid="stHeader"] svg,
+[data-testid="stHeader"] button,
 [data-testid="stHeader"] a,
-[data-testid="stHeader"] button p,
-[data-testid="stHeader"] svg path {
+[data-testid="stHeader"] span {
     color: #ffffff !important;
     fill: #ffffff !important;
+    border-color: transparent !important;
 }
 
 /* Force all text white - slightly adjusted for better legibility */
@@ -250,32 +248,33 @@ button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom: 2px solid #3b82f6 !important;
 }
 
-/* Main Hamburger Menu - Dark Blue Theme */
+/* AGGRESSIVE Fix for Hamburger Menu White Strips */
 div[data-baseweb="popover"],
+div[data-baseweb="popover"] *,
 div[data-baseweb="menu"],
+div[data-baseweb="menu"] *,
 ul[role="listbox"],
-ul[role="menu"] {
-    background-color: #1e293b !important;
-    color: #ffffff !important;
-    border: 1px solid #475569 !important;
-}
-
-div[role="menuitem"],
+ul[role="menu"],
 li[role="option"],
-div[data-baseweb="popover"] button {
-    background-color: transparent !important;
+div[role="menuitem"],
+[data-testid="stHeader"] button {
+    background-color: #1e293b !important;
+    background: #1e293b !important;
     color: #ffffff !important;
 }
 
+/* Preserve Hover Effect */
 div[role="menuitem"]:hover,
 li[role="option"]:hover,
-div[data-baseweb="popover"] button:hover {
+div[role="menuitem"]:hover *,
+li[role="option"]:hover * {
     background-color: #3b82f6 !important;
-    color: #ffffff !important;
+    background: #3b82f6 !important;
 }
 
 /* Fix for icons inside menus */
-div[data-baseweb="popover"] svg {
+div[data-baseweb="popover"] svg,
+div[data-baseweb="popover"] svg path {
     fill: #ffffff !important;
     color: #ffffff !important;
 }
