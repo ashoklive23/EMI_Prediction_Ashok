@@ -134,12 +134,20 @@ div[data-testid="stDataFrame"] th {
 /* Input Fields - Modern Look */
 input,
 select,
-textarea {
+textarea,
+div[data-baseweb="input"],
+div[data-baseweb="select"] {
     background-color: #1e293b !important;
-    color: #e2e8f0 !important;
+    color: #ffffff !important;
     border: 1px solid #475569 !important;
     border-radius: 8px !important;
-    padding: 8px 12px !important;
+}
+
+/* Specific fix for white backgrounds in number input buttons and fields */
+div[data-testid="stNumberInput"] button,
+div[data-testid="stNumberInput"] div {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
 }
 
 input:focus,
@@ -175,10 +183,23 @@ div[data-testid="metric-container"] [data-testid="stMetricValue"] {
 
 /* Expander - Clean Accordion */
 div[data-testid="stExpander"] {
-    background: rgba(30, 41, 59, 0.5);
+    background: #1e293b !important;
     border: 1px solid rgba(96, 165, 250, 0.2);
     border-radius: 8px;
     margin-bottom: 10px;
+}
+
+div[data-testid="stExpander"]>details>summary {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+}
+
+div[data-testid="stExpander"]>details>summary:hover {
+    color: #60a5fa !important;
+}
+
+div[data-testid="stExpander"] [data-testid="stMarkdownContainer"] p {
+    color: #ffffff !important;
 }
 
 /* Tabs - Professional */
