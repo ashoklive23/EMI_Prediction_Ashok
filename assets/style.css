@@ -13,45 +13,39 @@ body,
     font-family: 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Professional Theme: Force Dark Blue Background on Header/Toolbar */
-header[data-testid="stHeader"],
-[data-testid="stHeader"],
-.st-emotion-cache-1pxm65v,
-.st-emotion-cache-1647863 {
+/* Professional Theme: Force Dark Blue Background on Header */
+header[data-testid="stHeader"] {
     background-color: #1a1f2e !important;
-    background: #1a1f2e !important;
 }
 
-/* Force HEADER icons, text, and share button to be White & High Visibility */
-[data-testid="stHeader"] *,
-[data-testid="stHeader"] svg,
-[data-testid="stHeader"] path,
-[data-testid="stHeader"] button,
-[data-testid="stHeader"] a,
+/* Specific fix for 'Share' text and top-right icons */
+[data-testid="stHeader"] p,
 [data-testid="stHeader"] span,
-[data-testid="stHeader"] div {
+[data-testid="stHeader"] a {
     color: #ffffff !important;
-    fill: #ffffff !important;
-    opacity: 1 !important;
-    filter: none !important;
-    border-color: transparent !important;
-    visibility: visible !important;
 }
 
-/* Aggressive fix for GitHub/Star/Edit icons - targeting all svgs in header */
-header[data-testid="stHeader"] svg,
-header[data-testid="stHeader"] svg path,
-[data-testid="stHeader"] [data-testid="stIcon"] svg {
+/* Force all icons in the header to be white using filter */
+[data-testid="stHeader"] svg {
     fill: #ffffff !important;
     color: #ffffff !important;
+    filter: brightness(0) invert(1) !important;
     opacity: 1 !important;
-    stroke: #ffffff !important;
 }
 
-/* Ensure buttons themselves are visible */
-[data-testid="stHeader"] button:enabled {
+/* Targeting the specific toolbar buttons */
+header[data-testid="stHeader"] button,
+header[data-testid="stHeader"] a {
+    background-color: transparent !important;
+    border: none !important;
     opacity: 1 !important;
 }
+
+/* Ensure the menu icon (hamburger) is also white */
+header[data-testid="stHeader"] #MainMenu svg {
+    filter: brightness(0) invert(1) !important;
+}
+
 
 
 /* Force all text white - slightly adjusted for better legibility */
