@@ -250,6 +250,36 @@ button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom: 2px solid #3b82f6 !important;
 }
 
+/* Main Hamburger Menu - Dark Blue Theme */
+div[data-baseweb="popover"],
+div[data-baseweb="menu"],
+ul[role="listbox"],
+ul[role="menu"] {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    border: 1px solid #475569 !important;
+}
+
+div[role="menuitem"],
+li[role="option"],
+div[data-baseweb="popover"] button {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+div[role="menuitem"]:hover,
+li[role="option"]:hover,
+div[data-baseweb="popover"] button:hover {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+/* Fix for icons inside menus */
+div[data-baseweb="popover"] svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
 /* Plotly Charts */
 .js-plotly-plot {
     border-radius: 10px;
