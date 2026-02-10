@@ -1,18 +1,12 @@
 # Large files - excluded from Git
 emi_prediction_dataset.csv
 
-# Exclude large/debug models (keep only best 2 + label encoder)
-pipeline_regression.joblib
-pipeline_regression_quick.joblib
-pipeline_classification.joblib
-pipeline_classification_baseline.joblib
-pipeline_debug_linear.joblib
-pipeline_debug_rf.joblib
+# Exclude ALL model files (too large for GitHub)
+*.joblib
 
-# Keep these models (not ignored):
-# - pipeline_classification_xgb_tuned_fast.joblib
-# - pipeline_regression_xgb_focused.joblib
-# - label_encoder_classes.joblib
+# MLflow tracking (too large for GitHub)
+mlruns/
+mlflow.db
 
 # Python
 __pycache__/
@@ -22,3 +16,6 @@ __pycache__/
 # Environment
 .env
 venv/
+
+
+
