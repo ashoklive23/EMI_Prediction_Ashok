@@ -1,11 +1,28 @@
-/* Professional Corporate Theme - Clean & Modern */
+/* Global Background Fallback */
+html,
+body,
+[data-testid="stApp"] {
+    background-color: #1a1f2e !important;
+}
+
+/* Main Background - Fixed and Full Height */
 .stApp {
     background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+    background-attachment: fixed;
     color: #e2e8f0;
     font-family: 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Global Text Styling */
+/* Remove White Top Header */
+header[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+[data-testid="stHeader"] {
+    background-color: #1a1f2e !important;
+}
+
+/* Force all text white - slightly adjusted for better legibility */
 * {
     color: #e2e8f0 !important;
 }
