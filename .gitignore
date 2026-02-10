@@ -1,8 +1,12 @@
 # Large files - excluded from Git
 emi_prediction_dataset.csv
 
-# Exclude ALL model files (too large for GitHub)
+# Exclude ALL model files by default
 *.joblib
+# But keep the best performing ones
+!pipeline_classification_best.joblib
+!pipeline_regression_best.joblib
+!label_encoder_classes.joblib
 
 # MLflow tracking (too large for GitHub)
 mlruns/
