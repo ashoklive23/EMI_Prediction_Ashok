@@ -138,15 +138,19 @@ div[data-testid="stDataFrame"] th {
     font-weight: 600;
 }
 
-/* Input Fields - Modern Look */
+/* Input Fields - Modern Look & Aggressive Background Override */
 input,
 select,
 textarea,
 div[data-baseweb="input"],
 div[data-baseweb="select"],
 div[data-baseweb="popover"],
-div[data-testid="stSlider"] {
+div[data-testid="stSlider"],
+div[data-baseweb="base-input"],
+div[data-baseweb="select"]>div,
+div[role="listbox"] {
     background-color: #1e293b !important;
+    background: #1e293b !important;
     color: #ffffff !important;
     border: 1px solid #475569 !important;
     border-radius: 8px !important;
@@ -160,9 +164,19 @@ section[data-testid="stSidebar"] label {
 
 /* Specific fix for white backgrounds in number input buttons and fields */
 div[data-testid="stNumberInput"] button,
-div[data-testid="stNumberInput"] div {
+div[data-testid="stNumberInput"] div,
+div[data-testid="stTextInput"] div,
+div[data-testid="stSelectbox"] [data-baseweb="select"]>div,
+div[data-testid="stSelectbox"] div {
     background-color: #1e293b !important;
+    background: #1e293b !important;
     color: #ffffff !important;
+}
+
+/* Ensure placeholder text is also visible but subtle */
+::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1;
 }
 
 
