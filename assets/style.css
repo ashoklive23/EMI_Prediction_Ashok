@@ -28,20 +28,31 @@ header[data-testid="stHeader"],
 [data-testid="stHeader"] path,
 [data-testid="stHeader"] button,
 [data-testid="stHeader"] a,
-[data-testid="stHeader"] span {
+[data-testid="stHeader"] span,
+[data-testid="stHeader"] div {
     color: #ffffff !important;
     fill: #ffffff !important;
     opacity: 1 !important;
     filter: none !important;
     border-color: transparent !important;
+    visibility: visible !important;
 }
 
-/* Specific fix for dim GitHub/Star/Edit icons */
-[data-testid="stHeader"] [data-testid="stIcon"] svg,
-[data-testid="stHeader"] svg path {
+/* Aggressive fix for GitHub/Star/Edit icons - targeting all svgs in header */
+header[data-testid="stHeader"] svg,
+header[data-testid="stHeader"] svg path,
+[data-testid="stHeader"] [data-testid="stIcon"] svg {
     fill: #ffffff !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    stroke: #ffffff !important;
+}
+
+/* Ensure buttons themselves are visible */
+[data-testid="stHeader"] button:enabled {
     opacity: 1 !important;
 }
+
 
 /* Force all text white - slightly adjusted for better legibility */
 * {
