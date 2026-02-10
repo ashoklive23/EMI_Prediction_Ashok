@@ -13,19 +13,26 @@ body,
     font-family: 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Remove White Top Header */
-header[data-testid="stHeader"] {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
+/* Remove White Top Header and Toolbar Icons */
+header[data-testid="stHeader"],
 [data-testid="stHeader"] {
     background-color: #1a1f2e !important;
+    color: #ffffff !important;
+}
+
+/* Force Toolbar Icons (Top Right) to be white */
+[data-testid="stHeader"] button,
+[data-testid="stHeader"] span,
+[data-testid="stHeader"] svg {
+    color: #ffffff !important;
+    fill: #ffffff !important;
 }
 
 /* Force all text white - slightly adjusted for better legibility */
 * {
     color: #e2e8f0 !important;
 }
+
 
 /* Sidebar - Professional Navy */
 section[data-testid="stSidebar"] {
@@ -136,11 +143,19 @@ input,
 select,
 textarea,
 div[data-baseweb="input"],
-div[data-baseweb="select"] {
+div[data-baseweb="select"],
+div[data-baseweb="popover"],
+div[data-testid="stSlider"] {
     background-color: #1e293b !important;
     color: #ffffff !important;
     border: 1px solid #475569 !important;
     border-radius: 8px !important;
+}
+
+/* Ensure Slider and other widgets in sidebar are dark */
+section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"] p,
+section[data-testid="stSidebar"] label {
+    color: #ffffff !important;
 }
 
 /* Specific fix for white backgrounds in number input buttons and fields */
@@ -149,6 +164,7 @@ div[data-testid="stNumberInput"] div {
     background-color: #1e293b !important;
     color: #ffffff !important;
 }
+
 
 input:focus,
 select:focus,
