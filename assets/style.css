@@ -22,15 +22,25 @@ header[data-testid="stHeader"],
     background: #1a1f2e !important;
 }
 
-/* Force HEADER icons, text, and share button to be White */
+/* Force HEADER icons, text, and share button to be White & High Visibility */
 [data-testid="stHeader"] *,
 [data-testid="stHeader"] svg,
+[data-testid="stHeader"] path,
 [data-testid="stHeader"] button,
 [data-testid="stHeader"] a,
 [data-testid="stHeader"] span {
     color: #ffffff !important;
     fill: #ffffff !important;
+    opacity: 1 !important;
+    filter: none !important;
     border-color: transparent !important;
+}
+
+/* Specific fix for dim GitHub/Star/Edit icons */
+[data-testid="stHeader"] [data-testid="stIcon"] svg,
+[data-testid="stHeader"] svg path {
+    fill: #ffffff !important;
+    opacity: 1 !important;
 }
 
 /* Force all text white - slightly adjusted for better legibility */
