@@ -24,17 +24,35 @@ ARTIFACT_PATH = "models"
 # --- Feature Engineering ---
 def engineer_features(df):
     """
-    Applies domain-specific feature engineering.
+    Applies domain-specific feature engineering and aligns categories.
     """
+    # 0. Category Alignment (Matching UI labels in 1_Predict.py)
+    scenario_map = {
+        'Home Appliances EMI': 'Home_Loan',
+        'Vehicle EMI': 'Car_Loan',
+        'Personal Loan EMI': 'Personal_Loan',
+        'Education EMI': 'Education_Loan',
+        'E-commerce Shopping EMI': 'Shopping_Loan'
+    }
+    if 'emi_scenario' in df.columns:
+        df['emi_scenario'] = df['emi_scenario'].replace(scenario_map)
+    
     # Data Cleaning and Type Conversion
     numeric_cols_to_clean = [
         'monthly_salary', 'monthly_rent', 'school_fees', 'college_fees',
-        'travel_expenses', 'groceries_utilities', 'other_monthly_expenses', 'current_emi_amount'
+        'travel_expenses', 'groceries_utilities', 'other_monthly_expenses', 'current_emi_amount', 'requested_amount'
     ]
     
     for col in numeric_cols_to_clean:
         if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+            # First handle multiple decimal points like '64300.0.0'
+            df[col] = df[col].astype(str).str.replace(r'(\d+\.\d+)\..*', r'\1', regex=True)
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+            # Fill salary with median instead of 0 to avoid skewing ratios
+            if col == 'monthly_salary':
+                df[col] = df[col].fillna(df[col].median())
+            else:
+                df[col] = df[col].fillna(0)
 
     # Avoid division by zero
     df['monthly_salary'] = df['monthly_salary'].replace(0, 1)
@@ -87,10 +105,9 @@ def run_training_pipeline():
 
     print(f"Loading data from {DATA_PATH}...")
     try:
-        # Load a smaller subset for fast dev/demo cycle
-        # Increase this to None for full production training
-        print("Loading subset of data for fast training...")
-        df = pd.read_csv(DATA_PATH, low_memory=False, nrows=10000) 
+        # Load more data for better performance
+        print("Loading larger subset of data for high-accuracy training...")
+        df = pd.read_csv(DATA_PATH, low_memory=False, nrows=100000) 
         print(f"Data Loaded: {df.shape}")
     except Exception as e:
         print(f"Failed to read data: {e}")

@@ -85,7 +85,7 @@ def main():
 
         # Group: Limit Proposal
         with st.expander("💰 Loan Request", expanded=True):
-            emi_scenario = st.selectbox("EMI Scenario", ["Home_Loan", "Car_Loan", "Personal_Loan", "Education_Loan", "Business_Loan"])
+            emi_scenario = st.selectbox("EMI Scenario", ["Home_Loan", "Car_Loan", "Personal_Loan", "Education_Loan", "Shopping_Loan", "Business_Loan"])
             req_amount = st.number_input("Requested Loan Amount", 0.0, value=500000.0, step=10000.0)
             req_tenure = st.number_input("Requested Tenure (Months)", 1.0, 360.0, 24.0, step=6.0)
 
@@ -181,9 +181,20 @@ def main():
                     else:
                         st.warning("Calculated safe EMI is negligible. Reduce debt or expenses before applying.")
 
+                    # Add specific warning for Home Loans if amount is high
+                    if emi_scenario == "Home_Loan" and req_amount > 1500000:
+                         st.info("ℹ️ **Note for Large Loans:** The model is highly accurate for consumer loans up to ₹15L. For multi-crore loans, please combine this with traditional bank DSR (Debt Service Ratio) checks.")
+
                 except Exception as e:
                     st.error(f"Prediction Error: {e}")
                     st.write(input_df.dtypes)
+
+    st.markdown("---")
+    st.markdown("""
+        <div style="text-align: center; color: #6b7280; font-size: 0.9rem;">
+            <b>Project:</b> FinRisk AI - Guvi Capstone | <b>Tech:</b> Python, XGBoost, MLflow, Streamlit
+        </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
