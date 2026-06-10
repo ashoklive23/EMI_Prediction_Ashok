@@ -47,9 +47,8 @@ with col_left:
         if mlflow is None:
             st.warning("⚠️ MLflow not installed. Install with: `pip install mlflow`")
         else:
-            # Set tracking URI explicitly to absolute path of local folder
-            mlruns_path = os.path.abspath("mlruns")
-            mlflow.set_tracking_uri(f"file:///{mlruns_path}")
+            # Set tracking URI to SQLite backend (same as ml_workflow.py)
+            mlflow.set_tracking_uri("sqlite:///mlflow.db")
             
             # Set the experiment explicitly
             experiment_name = "EMI_Prediction_Experiment"
