@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import mlflow
 import mlflow.sklearn
+from mlflow.models.signature import infer_signature
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 from sklearn.compose import ColumnTransformer
@@ -18,6 +19,7 @@ import os
 
 # --- Configuration ---
 DATA_PATH = 'emi_prediction_dataset.csv'
+MLFLOW_TRACKING_URI = "sqlite:///mlflow.db"
 MLFLOW_EXPERIMENT_NAME = "EMI_Prediction_Experiment"
 ARTIFACT_PATH = "models"
 
@@ -136,11 +138,11 @@ def run_training_pipeline():
         X, y_cls, y_reg, test_size=0.2, random_state=42
     )
 
-    # 5. MLflow Setup
-    try:
-        mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
-    except:
-        print("MLflow experiment setup failed, continuing locally...")
+    # 5. MLflow Setup with SQLite Backend
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
+    print(f"MLflow Tracking URI: {MLFLOW_TRACKING_URI}")
+    print(f"MLflow Experiment: {MLFLOW_EXPERIMENT_NAME}")
 
     # --- Classification Task (3 Models) ---
     print("\n--- Training Classification Models ---")
@@ -163,7 +165,12 @@ def run_training_pipeline():
 
     for name, model in clf_models.items():
         print(f"Training {name}...")
-        with mlflow.start_run(run_name=f"CLF_{name}"):
+        with mlflow.start_run(run_name=f"CLF_{name}") as run:
+            # Log tags for easy filtering
+            mlflow.set_tag("task", "classification")
+            mlflow.set_tag("model_name", name)
+            mlflow.set_tag("dataset", DATA_PATH)
+
             pipeline = ImbPipeline(steps=[
                 ('preproc', get_preprocessor(numeric_features, categorical_features)),
                 ('oversample', SMOTE(random_state=42)),
@@ -177,12 +184,23 @@ def run_training_pipeline():
             acc = accuracy_score(y_cls_test_enc, y_pred)
             f1 = f1_score(y_cls_test_enc, y_pred, average='weighted')
             
-            print(f"  {name} Accuracy: {acc:.4f}")
+            print(f"  {name} Accuracy: {acc:.4f}, F1: {f1:.4f}")
             
             mlflow.log_param("model_type", name)
+            mlflow.log_param("task_type", "classification")
+            mlflow.log_param("n_train_samples", len(X_train))
+            mlflow.log_param("n_test_samples", len(X_test))
+            mlflow.log_param("n_features", len(numeric_features) + len(categorical_features))
             mlflow.log_metric("accuracy", acc)
             mlflow.log_metric("f1_score", f1)
-            mlflow.sklearn.log_model(pipeline, "model")
+
+            # Log model with signature and register it
+            signature = infer_signature(X_test, y_pred)
+            mlflow.sklearn.log_model(
+                pipeline, "model",
+                signature=signature,
+                registered_model_name=f"EMI_CLF_{name}"
+            )
             
             # Save local copy for reference
             joblib.dump(pipeline, f'model_clf_{name.lower()}.joblib')
@@ -192,7 +210,7 @@ def run_training_pipeline():
                 best_clf_name = name
                 best_clf_pipeline = pipeline
 
-    print(f"✅ Best Classification Model: {best_clf_name} (Acc: {best_clf_score:.4f})")
+    print(f"\n✅ Best Classification Model: {best_clf_name} (Acc: {best_clf_score:.4f})")
     joblib.dump(best_clf_pipeline, 'pipeline_classification_best.joblib')
 
     # --- Regression Task (3 Models) ---
@@ -217,7 +235,12 @@ def run_training_pipeline():
 
     for name, model in reg_models.items():
         print(f"Training {name}...")
-        with mlflow.start_run(run_name=f"REG_{name}"):
+        with mlflow.start_run(run_name=f"REG_{name}") as run:
+            # Log tags for easy filtering
+            mlflow.set_tag("task", "regression")
+            mlflow.set_tag("model_name", name)
+            mlflow.set_tag("dataset", DATA_PATH)
+
             pipeline = Pipeline(steps=[
                 ('pre', get_preprocessor(numeric_features, cat_features_reg)),
                 ('model', model)
@@ -231,13 +254,24 @@ def run_training_pipeline():
             r2 = r2_score(y_reg_test, preds)
             mae = mean_absolute_error(y_reg_test, preds)
 
-            print(f"  {name} RMSE: {rmse:.2f}")
+            print(f"  {name} RMSE: {rmse:.2f}, R²: {r2:.4f}, MAE: {mae:.2f}")
             
             mlflow.log_param("model_type", name)
+            mlflow.log_param("task_type", "regression")
+            mlflow.log_param("n_train_samples", len(X_train_reg))
+            mlflow.log_param("n_test_samples", len(X_test_reg))
+            mlflow.log_param("n_features", len(numeric_features) + len(cat_features_reg))
             mlflow.log_metric("rmse", rmse)
             mlflow.log_metric("r2", r2)
             mlflow.log_metric("mae", mae)
-            mlflow.sklearn.log_model(pipeline, "model")
+
+            # Log model with signature and register it
+            signature = infer_signature(X_test_reg, preds)
+            mlflow.sklearn.log_model(
+                pipeline, "model",
+                signature=signature,
+                registered_model_name=f"EMI_REG_{name}"
+            )
             
             # Save local copy for reference
             joblib.dump(pipeline, f'model_reg_{name.lower()}.joblib')
@@ -247,10 +281,16 @@ def run_training_pipeline():
                 best_reg_name = name
                 best_reg_pipeline = pipeline
 
-    print(f"✅ Best Regression Model: {best_reg_name} (RMSE: {best_reg_score:.2f})")
+    print(f"\n✅ Best Regression Model: {best_reg_name} (RMSE: {best_reg_score:.2f})")
     joblib.dump(best_reg_pipeline, 'pipeline_regression_best.joblib')
 
-    print("\nWorkflow Completed successfully.")
+    print("\n" + "="*60)
+    print("Workflow Completed successfully!")
+    print("="*60)
+    print(f"\n📊 To view & compare models in MLflow UI, run:")
+    print(f"   mlflow ui --backend-store-uri {MLFLOW_TRACKING_URI} --port 5000")
+    print(f"   Then open: http://127.0.0.1:5000")
+    print("="*60)
 
 if __name__ == "__main__":
     run_training_pipeline()
